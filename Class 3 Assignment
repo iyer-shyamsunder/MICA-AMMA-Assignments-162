@@ -1,0 +1,26 @@
+# Q(1):  Down a  csv file from https://data.oecd.org/healthstat/infant-mortality-rates.htm and read the csv file
+# And remove the last variable 
+
+infantmortality <- read.csv("infant_mortality.csv")
+str(infantmortality)
+infantmortality$Flag.Codes <- NULL
+infantmortality
+
+# Q(2): Read 2 table from html page https://en.wikipedia.org/wiki/India%E2%80%93Pakistan_cricket_rivalry
+# Find number of ODI Matches won by India
+
+library(XML)
+library(RCurl)
+library(rvest)
+cricketmatch <- "https://en.wikipedia.org/wiki/India%E2%80%93Pakistan_cricket_rivalry"
+file<-read_html(cricketmatch)
+file
+matches_tables<-html_nodes(file, "table")
+?html_nodes
+matches_tables
+matches_table1 <- html_table(matches_tables[2], fill = TRUE) #html_table is used for parsing the second table into a data frame
+?html_table
+View(matches_table1)
+IndiaWon <- as.data.frame(matches_table1) 
+IndiaWon
+IndiaWon$ODI[3] #accessing the 3rd Element in the ODI column
