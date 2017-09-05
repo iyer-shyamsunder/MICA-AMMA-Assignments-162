@@ -1,0 +1,8 @@
+
+# Create a dataset of Custs
+#                    ID as distinct numerical values
+#                    Income is normal distribution M: 250,000 and SD:75000
+#                    Gender 60% are Male in the sample
+
+customers.df <- data.frame (ID= 1:100, Salary = rnorm(100,250000,75000), sample(c("Male", "Female"), size=100, replace=TRUE, prob=c(0.60,0.40))) 
+colnames(customers.df) <- c("ID", "Salary", "Gender")
