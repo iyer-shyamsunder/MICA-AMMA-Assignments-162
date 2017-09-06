@@ -1,0 +1,45 @@
+#HANDS ON EXERCISE 1
+
+#1.Install a package - data.table and give a name of function starting character "d“
+#2.Install and Load package -datasets. Use “women” data frame available in this package. 
+#Find number of woman with height more than average but weight less than average
+
+
+
+install.packages('data.table')
+library(data.table)
+
+data(women)
+dataset <- women
+
+mean(women$height)
+mean(women$weight)
+women.df <- subset(women, women$height >mean(women$height) & women$weight < mean(women$weight))
+
+------------------------------------------------------------------------------------------------------------
+#Q.3
+#Create a data frame of 15 Indian cities and their population size. 
+#You could refer cities and population from this page. http://www.worldatlas.com/articles/the- biggest-cities-in-india.html
+
+
+library(XML)
+library(RCurl)
+library(rvest)
+Cities <- "http://www.worldatlas.com/articles/the-biggest-cities-in-india.html"
+Cities_1<-read_html(Cities)
+Cities_1
+Cities_table<-html_nodes(Cities_1, "table")
+?html_nodes
+Cities_table
+Cities_table1 <- html_table(Cities_table[1], fill = TRUE) #html_table is used for parsing the second table into a data frame
+?html_table
+View(Cities_table1)
+Cities_table.df <- as.data.frame(Cities_table1) 
+#------------------------------------------------------------------------------------------------------------
+  
+  
+  
+  
+  
+  
+  
