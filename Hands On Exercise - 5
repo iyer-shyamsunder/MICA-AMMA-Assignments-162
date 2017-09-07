@@ -1,0 +1,24 @@
+# Exercise 5
+
+#Q1. Getting the data and combining them
+
+employees = read.csv("/Users/shyamsunder/Downloads/MICA/AMMA/data_2017/Emp.csv")
+dept = read.csv("/Users/shyamsunder/Downloads/MICA/AMMA/data_2017/Dept.csv")
+
+si = merge(employees, dept)
+
+#Q2. Finding average salary by location
+
+avg_sal_loc = aggregate(si$SAL, by = list(si$LOC), data = si, mean)
+View(avg_sal_loc)
+
+#Q3. Finding the manager with the most reportees
+
+mgr = subset(si, select = c(3, 5))
+View(mgr)
+
+# Convert into factors to find frequency of each level
+mgr$MGR <- as.factor(mgr$MGR)
+rp = plyr::count(mgr, 'MGR')
+View(rp)
+print(rp[which.max(rp[,2]),])
