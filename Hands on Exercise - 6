@@ -1,0 +1,45 @@
+# Exercise 6
+
+library(XML)
+library(RCurl)
+
+url=getURL("http://stats.espncricinfo.com/ci/content/records/284248.html")
+cric_records=readHTMLTable(url,header=T,which=1,stringAsFactors=F)
+
+# Question 1 
+# Plot 5 highest runs
+
+order(cric_records$Runs) #To sort by runs in case the column is not already sorted
+
+# Subset of top 5 scores
+toprecords = cric_records[1:5,]
+
+# Drop unused levels and convert runs to numeric values
+toprecords$Year = factor(toprecords$Year)
+toprecords$Runs = as.numeric(levels(toprecords$Runs))[toprecords$Runs]
+
+# Use ggplot2 to create a bar plot
+
+library(ggplot2)
+
+ggplot(data=toprecords, aes(x=toprecords$Year, y=toprecords$Runs)) +
+  geom_bar(stat="identity", width = 0.5) +
+  geom_text(aes(label=toprecords$Runs), vjust=1.6, color="white", size=3.5)
+
+# Question 2
+# Make a frequency table for all players
+players=plyr::count(cric_records, 'Player')
+
+# Print the name of the player with the highest frequency value
+print(players[which.max(players[,2]),])
+
+# Question 3
+# Split Player Names into two columns
+
+cric_records$Player = as.character(cric_records$Player)
+
+cric_records = cbind(cric_records, stringr::str_split_fixed(cric_records$Player, " ", 3)) #PA de Silva string causing issues
+colnames(cric_records)[18] = "Country"
+country_cont = plyr::count(cric_records, 'Country')
+contribution = country_cont$freq*100/sum(country_cont$freq)
+country_cont = cbind(country_cont,contribution)
